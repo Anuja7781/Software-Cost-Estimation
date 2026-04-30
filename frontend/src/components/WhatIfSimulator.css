@@ -1,0 +1,261 @@
+.what-if-section {
+  background: white;
+  border: 2px solid #e3f2fd;
+  border-radius: 8px;
+  padding: 25px;
+  margin-top: 30px;
+}
+
+.what-if-section h2 {
+  color: #1976d2;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.what-if-description {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.what-if-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+.what-if-controls {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-group label {
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.feature-select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  min-width: 200px;
+}
+
+.feature-select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.btn-analyze {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.btn-analyze:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.btn-analyze:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.what-if-error {
+  background: #ffebee;
+  border: 1px solid #ef5350;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.what-if-error p {
+  margin: 0;
+}
+
+.analysis-results {
+  margin-top: 30px;
+}
+
+.analysis-results h3 {
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.results-chart {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.chart-container {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.effort-chart {
+  width: 100%;
+  height: auto;
+}
+
+.results-table {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  overflow-x: auto;
+}
+
+.results-table h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.what-if-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.what-if-table thead {
+  background: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.what-if-table th {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #1976d2;
+}
+
+.what-if-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.what-if-table tbody tr:hover {
+  background: #e3f2fd;
+}
+
+.what-if-table tbody tr.current-value {
+  background: #fff3e0;
+  font-weight: 600;
+}
+
+.feature-value {
+  color: #1976d2;
+  font-weight: 500;
+}
+
+.badge {
+  display: inline-block;
+  background: #ff9800;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+.effort {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.change {
+  font-weight: 600;
+}
+
+.change.increase {
+  color: #d32f2f;
+}
+
+.change.decrease {
+  color: #388e3c;
+}
+
+.analysis-insights {
+  background: #f0f4ff;
+  padding: 20px;
+  border-radius: 6px;
+  border-left: 4px solid #1976d2;
+  margin-top: 20px;
+}
+
+.analysis-insights h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.insights-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.insight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: white;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.insight .icon {
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .results-chart {
+    grid-template-columns: 1fr;
+  }
+
+  .what-if-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .feature-select {
+    min-width: auto;
+  }
+
+  .insights-list {
+    grid-template-columns: 1fr;
+  }
+}

@@ -9,6 +9,9 @@ import shap
 import lime
 import lime.lime_tabular
 from enum import Enum
+import json
+import os
+from datetime import datetime
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -25,6 +28,32 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# JSON file path for storing estimates
+ESTIMATES_FILE = "estimates.json"
+
+# Helper functions for JSON storage
+def load_estimates() -> List[Dict]:
+    """Load all estimates from JSON file"""
+    if os.path.exists(ESTIMATES_FILE):
+        try:
+            with open(ESTIMATES_FILE, 'r') as f:
+                return json.load(f)
+        except:
+            return []
+    return []
+
+def save_estimates(estimates: List[Dict]):
+    """Save estimates to JSON file"""
+    with open(ESTIMATES_FILE, 'w') as f:
+        json.dump(estimates, f, indent=2)
+
+def get_next_id() -> int:
+    """Get next ID for estimate"""
+    estimates = load_estimates()
+    if not estimates:
+        return 1
+    return max(est.get('id', 0) for est in estimates) + 1
 
 # Load model and preprocessing artifacts
 try:
@@ -158,6 +187,31 @@ class HealthResponse(BaseModel):
     model_loaded: bool
     shap_explainer_loaded: bool
 
+class EstimateRecord(BaseModel):
+    """Model for storing estimate records"""
+    id: Optional[int] = None
+    timestamp: str
+    project_name: Optional[str] = None
+    equivphyskloc: float
+    year: int
+    predicted_effort_months: float
+    prediction_log: float
+    features: Dict[str, Any]
+    shap_values: Optional[Dict[str, float]] = None
+
+class SaveEstimateRequest(BaseModel):
+    """Request to save an estimate"""
+    features: ProjectFeatures
+    predicted_effort_months: float
+    prediction_log: float
+    shap_values: Optional[Dict[str, float]] = None
+    project_name: Optional[str] = None
+
+class WhatsIfRequest(BaseModel):
+    """Request for what-if analysis"""
+    features: ProjectFeatures
+    variations: Dict[str, List[float]]  # e.g., {"equivphyskloc": [50, 100, 150, 200]}
+
 # Helper functions
 def preprocess_input(features: ProjectFeatures) -> pd.DataFrame:
     """Preprocess input features for model prediction"""
@@ -285,6 +339,110 @@ async def explain_prediction(features: ProjectFeatures):
 async def root():
     """Root endpoint"""
     return {"message": "Software Cost Estimation API", "version": "1.0.0"}
+
+@app.post("/save-estimate")
+async def save_estimate(request: SaveEstimateRequest):
+    """Save an estimate to JSON file"""
+    try:
+        estimates = load_estimates()
+        
+        estimate_record = {
+            "id": get_next_id(),
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "project_name": request.project_name or f"Project {get_next_id()}",
+            "equivphyskloc": request.features.equivphyskloc,
+            "year": request.features.year,
+            "predicted_effort_months": request.predicted_effort_months,
+            "prediction_log": request.prediction_log,
+            "features": request.features.dict(),
+            "shap_values": request.shap_values
+        }
+        
+        estimates.append(estimate_record)
+        save_estimates(estimates)
+        
+        return {
+            "status": "success",
+            "message": "Estimate saved successfully",
+            "estimate_id": estimate_record["id"]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error saving estimate: {str(e)}")
+
+@app.get("/history")
+async def get_history():
+    """Get all saved estimates"""
+    try:
+        estimates = load_estimates()
+        return {
+            "status": "success",
+            "count": len(estimates),
+            "estimates": estimates
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving history: {str(e)}")
+
+@app.delete("/estimate/{estimate_id}")
+async def delete_estimate(estimate_id: int):
+    """Delete a specific estimate"""
+    try:
+        estimates = load_estimates()
+        original_count = len(estimates)
+        estimates = [est for est in estimates if est.get("id") != estimate_id]
+        
+        if len(estimates) == original_count:
+            raise HTTPException(status_code=404, detail="Estimate not found")
+        
+        save_estimates(estimates)
+        return {
+            "status": "success",
+            "message": f"Estimate {estimate_id} deleted"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting estimate: {str(e)}")
+
+@app.post("/what-if")
+async def what_if_analysis(request: WhatsIfRequest):
+    """Perform what-if analysis by varying features"""
+    if model is None:
+        raise HTTPException(status_code=500, detail="Model not loaded")
+    
+    try:
+        results = {}
+        base_features = request.features.dict()
+        
+        # For each feature to vary
+        for feature_name, values_list in request.variations.items():
+            feature_results = []
+            
+            # For each value in the variation
+            for value in values_list:
+                # Create modified features
+                modified_features = base_features.copy()
+                modified_features[feature_name] = value
+                
+                # Create ProjectFeatures object
+                modified_proj = ProjectFeatures(**modified_features)
+                
+                # Preprocess and predict
+                processed_data = preprocess_input(modified_proj)
+                prediction_log = model.predict(processed_data)[0]
+                prediction_months = np.expm1(prediction_log)
+                
+                feature_results.append({
+                    "value": value,
+                    "predicted_effort_months": float(prediction_months),
+                    "prediction_log": float(prediction_log)
+                })
+            
+            results[feature_name] = feature_results
+        
+        return {
+            "status": "success",
+            "what_if_results": results
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"What-if analysis error: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn

@@ -1,7 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Results.css';
+import { saveEstimate } from '../services/api';
 
-const Results = ({ prediction, explanation }) => {
+const Results = ({ prediction, explanation, currentFeatures, backendAvailable }) => {
+  const [saveStatus, setSaveStatus] = useState(null);
+  const [projectName, setProjectName] = useState('');
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  if (!prediction && !explanation) {
+    return null;
+  }
+
+  const handleSaveEstimate = async () => {
+    if (!projectName.trim()) {
+      alert('Please enter a project name');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      await saveEstimate(
+        currentFeatures,
+        prediction,
+        explanation?.shap_values,
+        projectName
+      );
+      setSaveStatus('saved');
+      setProjectName('');
+      setShowSaveModal(false);
+      setTimeout(() => setSaveStatus(null), 3000);
+    } catch (err) {
+      setSaveStatus('error');
+      console.error('Error saving estimate:', err);
+    } finally {
+      setSaving(false);
+    }
+  };
   if (!prediction && !explanation) {
     return null;
   }
@@ -185,6 +220,65 @@ const Results = ({ prediction, explanation }) => {
             <div className="insight-card">
               <h4>Uncertainty Note</h4>
               <p>Cost estimates have inherent uncertainty. Consider this as one input among multiple estimation methods.</p>
+            </div>
+          </div>
+
+          <div className="save-estimate-section">
+            <button
+              className="btn btn-save-estimate"
+              onClick={() => setShowSaveModal(true)}
+              disabled={!backendAvailable}
+            >
+              💾 Save Estimate
+            </button>
+            {saveStatus === 'saved' && (
+              <div className="save-success-message">✓ Estimate saved successfully!</div>
+            )}
+            {saveStatus === 'error' && (
+              <div className="save-error-message">✗ Failed to save estimate</div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {showSaveModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <div className="modal-header">
+              <h3>Save Estimate</h3>
+              <button
+                className="modal-close"
+                onClick={() => setShowSaveModal(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <label htmlFor="project-name">Project Name:</label>
+              <input
+                id="project-name"
+                type="text"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                placeholder="Enter project name"
+                className="modal-input"
+                onKeyPress={(e) => e.key === 'Enter' && handleSaveEstimate()}
+              />
+            </div>
+            <div className="modal-footer">
+              <button
+                className="btn btn-secondary"
+                onClick={() => setShowSaveModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={handleSaveEstimate}
+                disabled={saving || !projectName.trim()}
+              >
+                {saving ? 'Saving...' : 'Save'}
+              </button>
             </div>
           </div>
         </div>

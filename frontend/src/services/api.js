@@ -62,10 +62,67 @@ export const checkBackendHealth = async () => {
   }
 };
 
+// Save estimate to history
+export const saveEstimate = async (features, prediction, shap_values, projectName) => {
+  try {
+    const response = await api.post('/save-estimate', {
+      features,
+      predicted_effort_months: prediction.predicted_effort_months,
+      prediction_log: prediction.prediction_log,
+      shap_values,
+      project_name: projectName
+    });
+    return response.data;
+  } catch (error) {
+    const message = error.response?.data?.detail || error.message || 'Save failed';
+    throw new Error(message);
+  }
+};
+
+// Get estimation history
+export const getHistory = async () => {
+  try {
+    const response = await api.get('/history');
+    return response.data;
+  } catch (error) {
+    const message = error.response?.data?.detail || error.message || 'Failed to fetch history';
+    throw new Error(message);
+  }
+};
+
+// Delete an estimate
+export const deleteEstimate = async (estimateId) => {
+  try {
+    const response = await api.delete(`/estimate/${estimateId}`);
+    return response.data;
+  } catch (error) {
+    const message = error.response?.data?.detail || error.message || 'Delete failed';
+    throw new Error(message);
+  }
+};
+
+// What-if analysis
+export const whatIfAnalysis = async (features, variations) => {
+  try {
+    const response = await api.post('/what-if', {
+      features,
+      variations
+    });
+    return response.data;
+  } catch (error) {
+    const message = error.response?.data?.detail || error.message || 'What-if analysis failed';
+    throw new Error(message);
+  }
+};
+
 export default {
   predictCost,
   explainPrediction,
   getHealth,
   getApiInfo,
   checkBackendHealth,
+  saveEstimate,
+  getHistory,
+  deleteEstimate,
+  whatIfAnalysis,
 };

@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import ProjectForm from './components/ProjectForm';
 import Results from './components/Results';
+import History from './components/History';
+import WhatIfSimulator from './components/WhatIfSimulator';
 import { predictCost, explainPrediction, checkBackendHealth } from './services/api';
 
 function App() {
   const [prediction, setPrediction] = useState(null);
   const [explanation, setExplanation] = useState(null);
+  const [currentFeatures, setCurrentFeatures] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [backendStatus, setBackendStatus] = useState(null);
@@ -39,6 +42,7 @@ function App() {
     try {
       const result = await predictCost(projectData);
       setPrediction(result);
+      setCurrentFeatures(projectData);
     } catch (err) {
       setError('Failed to get prediction: ' + err.message);
     } finally {
@@ -57,6 +61,7 @@ function App() {
     try {
       const result = await explainPrediction(projectData);
       setExplanation(result);
+      setCurrentFeatures(projectData);
     } catch (err) {
       setError('Failed to get explanation: ' + err.message);
     } finally {
@@ -79,6 +84,7 @@ function App() {
       ]);
       setPrediction(predResult);
       setExplanation(expResult);
+      setCurrentFeatures(projectData);
     } catch (err) {
       setError('Failed to get analysis: ' + err.message);
     } finally {
@@ -122,6 +128,18 @@ function App() {
           <Results
             prediction={prediction}
             explanation={explanation}
+            currentFeatures={currentFeatures}
+            backendAvailable={backendStatus}
+          />
+
+          <WhatIfSimulator
+            prediction={prediction}
+            currentFeatures={currentFeatures}
+            backendAvailable={backendStatus}
+          />
+
+          <History
+            backendAvailable={backendStatus}
           />
         </div>
       </main>

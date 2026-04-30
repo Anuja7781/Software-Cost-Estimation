@@ -255,7 +255,7 @@ class PredictionResponse(BaseModel):
     feature_importance: Dict[str, float] # SHAP importance
 
 class ExplanationResponse(BaseModel):
-    shap_values: Dict[str, float]       # Feature contributions
+    shap_values: Dict[str, float]       # Featutributions
     lime_explanation: Dict[str, Any]    # LIME config
     prediction: float                   # Cost estimate
 ```

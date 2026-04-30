@@ -489,6 +489,168 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
           </div>
         </div>
 
+        <div className="form-section">
+          <h3>Development Center</h3>
+          <div className="checkbox-grid">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="center_2"
+                checked={formData.center_2}
+                onChange={handleInputChange}
+              />
+              Center 2
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="center_3"
+                checked={formData.center_3}
+                onChange={handleInputChange}
+              />
+              Center 3
+            </label>
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h3>Project Name</h3>
+          <div className="checkbox-grid">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="projectname_erb"
+                checked={formData.projectname_erb}
+                onChange={handleInputChange}
+              />
+              ERB
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="projectname_gal"
+                checked={formData.projectname_gal}
+                onChange={handleInputChange}
+              />
+              GAL
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="projectname_hst"
+                checked={formData.projectname_hst}
+                onChange={handleInputChange}
+              />
+              HST
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="projectname_slp"
+                checked={formData.projectname_slp}
+                onChange={handleInputChange}
+              />
+              SLP
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="projectname_spl"
+                checked={formData.projectname_spl}
+                onChange={handleInputChange}
+              />
+              SPL
+            </label>
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h3>Project Category</h3>
+          <div className="checkbox-grid">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="cat2_business"
+                checked={formData.cat2_business}
+                onChange={handleInputChange}
+              />
+              Business
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="cat2_development"
+                checked={formData.cat2_development}
+                onChange={handleInputChange}
+              />
+              Development
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="cat2_enhancement"
+                checked={formData.cat2_enhancement}
+                onChange={handleInputChange}
+              />
+              Enhancement
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="cat2_flight"
+                checked={formData.cat2_flight}
+                onChange={handleInputChange}
+              />
+              Flight
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="cat2_ground"
+                checked={formData.cat2_ground}
+                onChange={handleInputChange}
+              />
+              Ground
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="cat2_mission"
+                checked={formData.cat2_mission}
+                onChange={handleInputChange}
+              />
+              Mission
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="cat2_navigation"
+                checked={formData.cat2_navigation}
+                onChange={handleInputChange}
+              />
+              Navigation
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="cat2_simulation"
+                checked={formData.cat2_simulation}
+                onChange={handleInputChange}
+              />
+              Simulation
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="cat2_system"
+                checked={formData.cat2_system}
+                onChange={handleInputChange}
+              />
+              System
+            </label>
+          </div>
+        </div>
+
         <div className="form-actions">
           <button
             type="button"
