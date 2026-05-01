@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import ProjectForm from './components/ProjectForm';
-import Results from './components/Results';
-import History from './components/History';
-import WhatIfSimulator from './components/WhatIfSimulator';
 import { predictCost, explainPrediction, checkBackendHealth } from './services/api';
+import HomePage from './pages/HomePage';
+import EstimatePage from './pages/EstimatePage';
+import ResultsPage from './pages/ResultsPage';
+import HistoryPage from './pages/HistoryPage';
 
-function App() {
+function AppContent() {
+  const getInitialPage = () => {
+    if (window.location.pathname === '/estimate') return 'estimate';
+    if (window.location.pathname === '/results') return 'results';
+    if (window.location.pathname === '/history') return 'history';
+    return 'home';
+  };
+
+  const [page, setPage] = useState(getInitialPage);
   const [prediction, setPrediction] = useState(null);
   const [explanation, setExplanation] = useState(null);
   const [currentFeatures, setCurrentFeatures] = useState(null);
@@ -31,6 +39,27 @@ function App() {
     checkHealth();
   }, []);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setPage(getInitialPage());
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigate = (nextPage) => {
+    const pathMap = {
+      home: '/',
+      estimate: '/estimate',
+      results: '/results',
+      history: '/history'
+    };
+
+    window.history.pushState({}, '', pathMap[nextPage]);
+    setPage(nextPage);
+  };
+
   const handlePredict = async (projectData) => {
     if (!backendStatus) {
       setError('Backend is not available. Please ensure the API server is running.');
@@ -43,6 +72,7 @@ function App() {
       const result = await predictCost(projectData);
       setPrediction(result);
       setCurrentFeatures(projectData);
+      navigate('results');
     } catch (err) {
       setError('Failed to get prediction: ' + err.message);
     } finally {
@@ -62,6 +92,7 @@ function App() {
       const result = await explainPrediction(projectData);
       setExplanation(result);
       setCurrentFeatures(projectData);
+      navigate('results');
     } catch (err) {
       setError('Failed to get explanation: ' + err.message);
     } finally {
@@ -85,6 +116,7 @@ function App() {
       setPrediction(predResult);
       setExplanation(expResult);
       setCurrentFeatures(projectData);
+      navigate('results');
     } catch (err) {
       setError('Failed to get analysis: ' + err.message);
     } finally {
@@ -95,52 +127,53 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Software Cost Estimation Tool</h1>
-        <p>Powered by Explainable AI</p>
-        <div className="backend-status">
-          {checkingBackend ? (
-            <span className="status-checking">Checking backend...</span>
-          ) : backendStatus ? (
-            <span className="status-healthy">✓ Backend Connected</span>
-          ) : (
-            <span className="status-error">✗ Backend Not Available</span>
-          )}
+        <div className="header-top">
+          <div className="header-copy">
+            <h1>Software Cost Estimation Tool</h1>
+            <p>Estimate, explain, and review projects on separate pages.</p>
+          </div>
+          <nav className="App-nav" aria-label="Primary">
+            <button type="button" className={`nav-link ${page === 'home' ? 'active' : ''}`} onClick={() => navigate('home')}>Home</button>
+            <button type="button" className={`nav-link ${page === 'estimate' ? 'active' : ''}`} onClick={() => navigate('estimate')}>Estimate</button>
+            <button type="button" className={`nav-link ${page === 'results' ? 'active' : ''}`} onClick={() => navigate('results')}>Results</button>
+            <button type="button" className={`nav-link ${page === 'history' ? 'active' : ''}`} onClick={() => navigate('history')}>History</button>
+          </nav>
         </div>
       </header>
 
       <main className="App-main">
-        <div className="container">
-          <ProjectForm
-            onPredict={handlePredict}
-            onExplain={handleExplain}
-            onCombinedAnalysis={handleCombinedAnalysis}
-            loading={loading}
-            backendAvailable={backendStatus}
-          />
-
-          {error && (
-            <div className="error-message">
-              <h3>Error</h3>
-              <p>{error}</p>
-            </div>
+        <div className="container page-shell">
+          {page === 'home' && (
+            <HomePage
+              backendAvailable={backendStatus}
+              checkingBackend={checkingBackend}
+              navigate={navigate}
+            />
           )}
-
-          <Results
-            prediction={prediction}
-            explanation={explanation}
-            currentFeatures={currentFeatures}
-            backendAvailable={backendStatus}
-          />
-
-          <WhatIfSimulator
-            prediction={prediction}
-            currentFeatures={currentFeatures}
-            backendAvailable={backendStatus}
-          />
-
-          <History
-            backendAvailable={backendStatus}
-          />
+          {page === 'estimate' && (
+            <EstimatePage
+              onPredict={handlePredict}
+              onExplain={handleExplain}
+              onCombinedAnalysis={handleCombinedAnalysis}
+              loading={loading}
+              backendAvailable={backendStatus}
+            />
+          )}
+          {page === 'results' && (
+            <ResultsPage
+              error={error}
+              prediction={prediction}
+              explanation={explanation}
+              currentFeatures={currentFeatures}
+              backendAvailable={backendStatus}
+              navigate={navigate}
+              loading={loading}
+              onGetFullAnalysis={handleCombinedAnalysis}
+            />
+          )}
+          {page === 'history' && (
+            <HistoryPage backendAvailable={backendStatus} navigate={navigate} />
+          )}
         </div>
       </main>
 
@@ -149,6 +182,10 @@ function App() {
       </footer>
     </div>
   );
+}
+
+function App() {
+  return <AppContent />;
 }
 
 export default App;

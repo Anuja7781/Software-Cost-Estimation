@@ -5,6 +5,23 @@
   gap: 2rem;
 }
 
+.analysis-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.analysis-controls .btn {
+  min-width: 140px;
+  font-size: 0.95rem;
+}
+
 .result-section {
   background: white;
   border-radius: 12px;

@@ -11,28 +11,78 @@
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   padding: 2rem 0;
-  text-align: center;
   color: white;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
 
-.App-header h1 {
-  margin: 0;
-  font-size: 2.5rem;
-  font-weight: 300;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.header-top {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.App-header p {
+.header-copy h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 300;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.header-copy p {
   margin: 0.5rem 0 0 0;
   font-size: 1.1rem;
   opacity: 0.9;
 }
 
-.backend-status {
-  margin-top: 1rem;
+.App-nav {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.nav-link {
+  appearance: none;
+  color: white;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  background: rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
   font-size: 0.9rem;
-  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+.backend-status {
+  position: fixed;
+  top: 1.5rem;
+  right: 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  z-index: 1000;
+  min-width: 180px;
+  text-align: center;
 }
 
 .status-checking {
@@ -56,6 +106,131 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+}
+
+.page-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+}
+
+.page-heading {
+  margin-bottom: 1.25rem;
+}
+
+.page-heading h2,
+.home-page h2 {
+  margin: 0.35rem 0 0.5rem 0;
+  color: #1d2235;
+}
+
+.page-heading p,
+.home-page p,
+.status-panel p {
+  margin: 0;
+  color: #4b5563;
+}
+
+.eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.home-page {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.hero-copy,
+.status-panel,
+.empty-state {
+  border-radius: 14px;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.96));
+  border: 1px solid rgba(219, 234, 254, 0.8);
+}
+
+.hero-copy h2 {
+  font-size: 1.75rem;
+  line-height: 1.3;
+  color: #1d2235;
+  margin: 0 0 0.5rem 0;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.75rem 1.25rem;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.button-link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #1d4ed8;
+  color: white;
+}
+
+.btn-secondary {
+  background: white;
+  color: #1d4ed8;
+  border-color: rgba(29, 78, 216, 0.25);
+}
+
+.text-link {
+  color: #1d4ed8;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.status-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1.25rem;
+}
+
+.status-panel h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #1d2235;
+}
+
+.empty-state {
+  text-align: center;
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
 }
 
 .App-footer {
@@ -87,8 +262,43 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .App-header h1 {
-    font-size: 2rem;
+  .backend-status {
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+    min-width: 160px;
+  }
+
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .App-nav {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .nav-link {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .home-page {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .page-card {
+    padding: 1.5rem;
+  }
+
+  .hero-copy h2 {
+    font-size: 1.5rem;
   }
 
   .container {
