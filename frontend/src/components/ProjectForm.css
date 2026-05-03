@@ -28,11 +28,15 @@
   padding-bottom: 0;
 }
 
-.form-section h3 {
-  color: #555;
+.form-note {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 0.75rem;
   margin-bottom: 1rem;
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-style: italic;
 }
 
 .form-row {

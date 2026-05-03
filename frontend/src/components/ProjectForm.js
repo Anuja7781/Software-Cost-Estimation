@@ -75,23 +75,13 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
     center_2: false,
     center_3: false,
 
-    // Project name (all false by default)
-    projectname_erb: false,
-    projectname_gal: false,
-    projectname_hst: false,
-    projectname_slp: false,
-    projectname_spl: false,
-
-    // Category 2 (all false by default)
-    cat2_business: false,
-    cat2_development: false,
-    cat2_enhancement: false,
-    cat2_flight: false,
-    cat2_ground: false,
-    cat2_mission: false,
-    cat2_navigation: false,
-    cat2_simulation: false,
-    cat2_system: false
+    // Modern development practices (new general factors)
+    agile_methodology: false,
+    continuous_integration: false,
+    test_automation: false,
+    cloud_deployment: false,
+    open_source_libs: false,
+    microservices_arch: false,
   });
 
   const handleInputChange = (e) => {
@@ -439,58 +429,71 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
         </div>
 
         <div className="form-section">
-          <h3>Development Practices & Tools</h3>
+          <h3>Modern Development Practices</h3>
+          <p className="form-note">These factors reflect current software development methodologies and can significantly impact cost estimates.</p>
+          
           <div className="checkbox-grid">
             <label className="checkbox-label">
               <input
                 type="checkbox"
-                name="modp_h"
-                checked={formData.modp_h}
+                name="agile_methodology"
+                checked={formData.agile_methodology || false}
                 onChange={handleInputChange}
               />
-              High Modern Programming Practices
+              Agile Methodology
             </label>
             <label className="checkbox-label">
               <input
                 type="checkbox"
-                name="modp_vh"
-                checked={formData.modp_vh}
+                name="continuous_integration"
+                checked={formData.continuous_integration || false}
                 onChange={handleInputChange}
               />
-              Very High Modern Programming Practices
+              CI/CD Pipeline
             </label>
             <label className="checkbox-label">
               <input
                 type="checkbox"
-                name="tool_h"
-                checked={formData.tool_h}
+                name="test_automation"
+                checked={formData.test_automation || false}
                 onChange={handleInputChange}
               />
-              High Use of Software Tools
+              Test Automation
             </label>
             <label className="checkbox-label">
               <input
                 type="checkbox"
-                name="sced_h"
-                checked={formData.sced_h}
+                name="cloud_deployment"
+                checked={formData.cloud_deployment || false}
                 onChange={handleInputChange}
               />
-              High Required Development Schedule
+              Cloud-Native Development
             </label>
             <label className="checkbox-label">
               <input
                 type="checkbox"
-                name="forg_d"
-                checked={formData.forg_d}
+                name="open_source_libs"
+                checked={formData.open_source_libs || false}
                 onChange={handleInputChange}
               />
-              Database Size
+              Heavy Open Source Usage
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="microservices_arch"
+                checked={formData.microservices_arch || false}
+                onChange={handleInputChange}
+              />
+              Microservices Architecture
             </label>
           </div>
         </div>
 
         <div className="form-section">
-          <h3>Development Center</h3>
+          <h3>Optional NASA-Specific Factors</h3>
+          <p className="form-note">These factors are specific to NASA projects and may not apply to general software development. You can leave them unchecked for general cost estimation.</p>
+          
           <div className="checkbox-grid">
             <label className="checkbox-label">
               <input
@@ -499,7 +502,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.center_2}
                 onChange={handleInputChange}
               />
-              Center 2
+              Center 2 (NASA-specific)
             </label>
             <label className="checkbox-label">
               <input
@@ -508,13 +511,10 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.center_3}
                 onChange={handleInputChange}
               />
-              Center 3
+              Center 3 (NASA-specific)
             </label>
           </div>
-        </div>
 
-        <div className="form-section">
-          <h3>Project Name</h3>
           <div className="checkbox-grid">
             <label className="checkbox-label">
               <input
@@ -523,7 +523,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.projectname_erb}
                 onChange={handleInputChange}
               />
-              ERB
+              ERB Project
             </label>
             <label className="checkbox-label">
               <input
@@ -532,7 +532,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.projectname_gal}
                 onChange={handleInputChange}
               />
-              GAL
+              GAL Project
             </label>
             <label className="checkbox-label">
               <input
@@ -541,7 +541,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.projectname_hst}
                 onChange={handleInputChange}
               />
-              HST
+              HST Project
             </label>
             <label className="checkbox-label">
               <input
@@ -550,7 +550,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.projectname_slp}
                 onChange={handleInputChange}
               />
-              SLP
+              SLP Project
             </label>
             <label className="checkbox-label">
               <input
@@ -559,13 +559,10 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.projectname_spl}
                 onChange={handleInputChange}
               />
-              SPL
+              SPL Project
             </label>
           </div>
-        </div>
 
-        <div className="form-section">
-          <h3>Project Category</h3>
           <div className="checkbox-grid">
             <label className="checkbox-label">
               <input
@@ -574,7 +571,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.cat2_business}
                 onChange={handleInputChange}
               />
-              Business
+              Business Category
             </label>
             <label className="checkbox-label">
               <input
@@ -583,7 +580,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.cat2_development}
                 onChange={handleInputChange}
               />
-              Development
+              Development Category
             </label>
             <label className="checkbox-label">
               <input
@@ -592,7 +589,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.cat2_enhancement}
                 onChange={handleInputChange}
               />
-              Enhancement
+              Enhancement Category
             </label>
             <label className="checkbox-label">
               <input
@@ -601,7 +598,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.cat2_flight}
                 onChange={handleInputChange}
               />
-              Flight
+              Flight Category
             </label>
             <label className="checkbox-label">
               <input
@@ -610,7 +607,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.cat2_ground}
                 onChange={handleInputChange}
               />
-              Ground
+              Ground Category
             </label>
             <label className="checkbox-label">
               <input
@@ -619,7 +616,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.cat2_mission}
                 onChange={handleInputChange}
               />
-              Mission
+              Mission Category
             </label>
             <label className="checkbox-label">
               <input
@@ -628,7 +625,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.cat2_navigation}
                 onChange={handleInputChange}
               />
-              Navigation
+              Navigation Category
             </label>
             <label className="checkbox-label">
               <input
@@ -637,7 +634,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.cat2_simulation}
                 onChange={handleInputChange}
               />
-              Simulation
+              Simulation Category
             </label>
             <label className="checkbox-label">
               <input
@@ -646,7 +643,7 @@ const ProjectForm = ({ onPredict, onExplain, onCombinedAnalysis, loading, backen
                 checked={formData.cat2_system}
                 onChange={handleInputChange}
               />
-              System
+              System Category
             </label>
           </div>
         </div>

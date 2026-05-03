@@ -5,12 +5,14 @@ import HomePage from './pages/HomePage';
 import EstimatePage from './pages/EstimatePage';
 import ResultsPage from './pages/ResultsPage';
 import HistoryPage from './pages/HistoryPage';
+import HelpPage from './pages/HelpPage';
 
 function AppContent() {
   const getInitialPage = () => {
     if (window.location.pathname === '/estimate') return 'estimate';
     if (window.location.pathname === '/results') return 'results';
     if (window.location.pathname === '/history') return 'history';
+    if (window.location.pathname === '/help') return 'help';
     return 'home';
   };
 
@@ -137,6 +139,9 @@ function AppContent() {
             <button type="button" className={`nav-link ${page === 'estimate' ? 'active' : ''}`} onClick={() => navigate('estimate')}>Estimate</button>
             <button type="button" className={`nav-link ${page === 'results' ? 'active' : ''}`} onClick={() => navigate('results')}>Results</button>
             <button type="button" className={`nav-link ${page === 'history' ? 'active' : ''}`} onClick={() => navigate('history')}>History</button>
+            <button type="button" className="help-button" onClick={() => navigate('help')} title="Help & Feature Guide">
+              ❓ Help
+            </button>
           </nav>
         </div>
       </header>
@@ -173,6 +178,9 @@ function AppContent() {
           )}
           {page === 'history' && (
             <HistoryPage backendAvailable={backendStatus} navigate={navigate} />
+          )}
+          {page === 'help' && (
+            <HelpPage onBack={() => navigate('home')} />
           )}
         </div>
       </main>

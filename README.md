@@ -1,15 +1,31 @@
 # Software Cost Estimation with Explainable AI
 
-A complete machine learning system for software cost estimation using NASA93 and Desharnais datasets, featuring explainable AI with SHAP and LIME explanations.
+A **general-purpose machine learning system** for software cost estimation using COCOMO methodology, featuring explainable AI with SHAP and LIME explanations. Originally trained on NASA93 and Desharnais datasets, now adapted for general software development projects.
+
+## 🎯 **Target Audience**
+- **General Software Teams**: Product managers, project managers, and developers estimating project costs
+- **Consultants**: Providing cost estimates for client projects
+- **NASA/Defense Projects**: Specialized aerospace/defense software (with NASA-specific factors available)
+- **Educational Use**: Learning cost estimation and ML in software engineering
+
+## 🚀 **Key Features**
+- **Universal COCOMO Factors**: Core cost drivers applicable to any software project
+- **Modern Development Factors**: Agile, CI/CD, cloud-native, microservices considerations
+- **Optional NASA-Specific Factors**: Specialized factors for aerospace/defense projects
+- **Explainable AI**: SHAP and LIME explanations for model transparency
+- **Web Interface**: User-friendly React frontend
+- **REST API**: FastAPI backend for integration
 
 ## 🚀 Features
 
 - **Machine Learning Model**: Gradient Boosting Regressor trained on combined NASA93 + Desharnais datasets
 - **Explainable AI**: SHAP and LIME explanations for model transparency
+- **General-Purpose**: Core COCOMO factors applicable to any software project
+- **Modern Development Support**: Factors for Agile, DevOps, cloud-native development
+- **NASA/Aerospace Optional**: Specialized factors for space/defense projects
 - **REST API**: FastAPI backend for model serving
 - **Web Interface**: React frontend for easy interaction
 - **External Validation**: Tested on unseen datasets for robustness
-- **Production Ready**: Docker support and deployment configurations
 
 ## 📊 Performance
 
